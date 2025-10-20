@@ -132,3 +132,4 @@ vite.config.ts.timestamp-*
 .tern-port
 .vscode-test
 
+backend/uploads
