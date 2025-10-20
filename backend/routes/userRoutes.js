@@ -1,10 +1,12 @@
 import express from "express";
 import User from "../models/User.js";
 import multer from "multer";
+import fs from "fs";
+import path from "path";
 
 const router = express.Router();
 
-// Set Multer for Image Uploads
+// Setup Mutler for Image Uploads
 const storage = multer.diskStorage({
   destination: "uploads/",
   filename: (req, file, cb) => {
@@ -46,6 +48,38 @@ router.post("/", upload.single("profileImage"), async (req, res) => {
     await user.save();
 
     res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Profile API -> PUT /api/users/:id
+router.put("/:id", upload.single("profileImage"), async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    let user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (req.file) {
+      if (user.profileImage) {
+        // remove old image
+        const oldImagePath = path.join(process.cwd(), user.profileImage);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+      user.profileImage = `/uploads/${req.file.filename}`;
+    }
+
+    // Update name if provided
+    if (name) {
+      user.name = name;
+    }
+    await user.save();
+    res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
