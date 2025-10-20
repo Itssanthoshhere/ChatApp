@@ -17,9 +17,20 @@ export default function OTPScreen() {
     console.log("Generated OTP", randomOTP); //Debug
   };
 
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setTimer(30);
+    intervalRef.current = setInterval(
+      () => setTimer((prev) => (prev > 0 ? prev - 1 : 0)),
+      1000
+    );
+  };
+
   const resendOtp = () => {
     generateRandomOTP();
-    setTimer(30);
+    startTimer();
   };
 
   // Verify OTP
