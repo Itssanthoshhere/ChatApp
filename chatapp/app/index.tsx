@@ -33,7 +33,7 @@ export default function WelcomeScreen() {
           router.push("/login");
         }}
       >
-        <Text className="text-white text-center font-bold text-lg">Agree</Text>
+        <Text className="text-white text-center font-bold text-lg">Agree & Continue</Text>
       </TouchableOpacity>
     </View>
   );
