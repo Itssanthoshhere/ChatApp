@@ -10,7 +10,7 @@ export default function WelcomeScreen() {
       {/* Logo */}
       <Image
         className="w-28 h-28 mb-10"
-        source={require("../assets/images/WhatsApp_Logo_green.svg.png")}
+        source={require("../assets/images/WhatsApp.png")}
       />
 
       {/* Welcome Text */}
