@@ -40,7 +40,7 @@ export default function LoginScreen() {
 
       {/* Next Button */}
       <TouchableOpacity
-        className={`p-4 w-full ${isValidNumber ? "bg-green-500" : "bg-gray-300"}   rounded-full mt-6`}
+        className={`p-4 w-full ${isValidNumber ? "bg-green-500" : "bg-gray-300"} rounded-full mt-6`}
         disabled={!isValidNumber}
         onPress={handleNext}
       >
