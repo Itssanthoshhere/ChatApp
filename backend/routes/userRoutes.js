@@ -14,6 +14,7 @@ router.get("/:phone", async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
