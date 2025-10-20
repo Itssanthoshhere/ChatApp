@@ -1,0 +1,134 @@
+# ===============================
+# Logs and Reports
+# ===============================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ===============================
+# Runtime Data
+# ===============================
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ===============================
+# Dependency Directories
+# ===============================
+node_modules/
+bower_components/
+jspm_packages/
+web_modules/
+
+# ===============================
+# Build and Output
+# ===============================
+dist
+dist-ssr
+build
+out
+.output
+.next
+.nuxt
+.cache
+.parcel-cache
+.vuepress/dist
+.vuepress/.temp
+.svelte-kit/
+.vite/
+.docusaurus
+.temp
+.vitepress/dist
+.vitepress/cache
+
+# ===============================
+# Environment Variables
+# ===============================
+.env
+.env.*
+!.env.example
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ===============================
+# Editor and System Files
+# ===============================
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ===============================
+# TypeScript and Tooling
+# ===============================
+*.tsbuildinfo
+.npm
+.eslintcache
+.stylelintcache
+.node_repl_history
+.nyc_output
+.grunt
+.lock-wscript
+.yarn-integrity
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# ===============================
+# Coverage and Testing
+# ===============================
+coverage/
+*.lcov
+lib-cov
+
+# ===============================
+# Package Archives
+# ===============================
+*.tgz
+
+# ===============================
+# Framework Specific
+# ===============================
+# Next.js
+.next
+out
+
+# Nuxt.js
+.nuxt
+.output
+
+# Gatsby
+.cache/
+# Uncomment if using Gatsby only
+# public/
+
+# Vite / VitePress
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# ===============================
+# Miscellaneous
+# ===============================
+.serverless/
+.fusebox/
+.dynamodb/
+.firebase/
+.tern-port
+.vscode-test
+
