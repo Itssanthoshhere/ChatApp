@@ -3,7 +3,7 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// Get User by Phone API
+// Get User by Phone API -> GET api/users/:phone
 router.get("/:phone", async (req, res) => {
   try {
     const user = await User.findOne({ phone: req.params.phone });

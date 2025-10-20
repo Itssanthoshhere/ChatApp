@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,8 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello");
 });
+
+app.use("/api/users", userRoutes);
 
 // Start server
 app.listen(port, () =>
