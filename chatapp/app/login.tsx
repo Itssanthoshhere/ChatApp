@@ -31,7 +31,7 @@ export default function LoginScreen() {
 
       {/* Phone number Input */}
       <TextInput
-        className="border border-gray-300 p-4 text-lg  rounded-lg w-full text-center"
+        className="border border-gray-300 p-4 text-lg rounded-lg w-full text-center"
         placeholder="+91 9876543210"
         keyboardType="phone-pad"
         value={phone}
