@@ -1,6 +1,7 @@
+import CustomTextInput from "@/components/CustomTextInput";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
 export default function OTPScreen() {
   const { phone } = useLocalSearchParams();
@@ -61,7 +62,7 @@ export default function OTPScreen() {
       </Text>
 
       {/* OTP Input */}
-      <TextInput
+      <CustomTextInput
         className="border border-gray-300 p-4 text-lg rounded-lg text-center w-3/4"
         keyboardType="number-pad"
         value={otp}

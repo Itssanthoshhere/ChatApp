@@ -1,6 +1,7 @@
+import CustomTextInput from "@/components/CustomTextInput";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
   const [phone, setPhone] = useState("+91");
@@ -30,7 +31,7 @@ export default function LoginScreen() {
       </Text>
 
       {/* Phone number Input */}
-      <TextInput
+      <CustomTextInput
         className="border border-gray-300 p-4 text-lg rounded-lg w-full text-center"
         placeholder="+91 9876543210"
         keyboardType="phone-pad"
