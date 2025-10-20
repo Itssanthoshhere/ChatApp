@@ -43,7 +43,11 @@ export default function OTPScreen() {
   // Generate OTP & Start Timer on Screen Load
   useEffect(() => {
     generateRandomOTP();
-    const intervel = setInterval(
+    const interval = setInterval(
+       () => setTimer((prev) => (prev > 0 ? prev - 1 : 0)),
+       1000
+     );
+    return () => clearInterval(interval);
       () => setTimer((prev) => (prev > 0 ? prev - 1 : 0)),
       1000
     );
