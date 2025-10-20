@@ -26,7 +26,7 @@ export default function LoginScreen() {
 
       {/* Description */}
       <Text className="text-gray-500 text-lg text-center mb-6">
-        Whatsapp will send an SMS to verify your Number
+        WhatsApp will send an SMS to verify your Number
       </Text>
 
       {/* Phone number Input */}
