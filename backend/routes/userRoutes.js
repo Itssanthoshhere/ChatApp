@@ -14,7 +14,9 @@ router.get("/:phone", async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    console.error('Error fetching user:', error);
+    console.error("Error fetching user:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+export default router;
