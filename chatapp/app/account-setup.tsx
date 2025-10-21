@@ -118,7 +118,11 @@ export default function AccountSetupScreen() {
     };
 
     // Listen back button press
-    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+
+    return () => {
+      backHandler.remove();
+    };
   }, []);
 
   if (loading)
