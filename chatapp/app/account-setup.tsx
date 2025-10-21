@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  BackHandler,
   Image,
   Text,
   TouchableOpacity,
@@ -110,6 +111,18 @@ export default function AccountSetupScreen() {
 
   useEffect(() => {
     fetchUser();
+
+    const handleBackPress = () => {
+      router.replace("/");
+      return true;
+    };
+
+    // Listen back button press
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+
+    return () => {
+      backHandler.remove();
+    };
   }, []);
 
   if (loading)
