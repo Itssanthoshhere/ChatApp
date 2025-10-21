@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import CustomTextInput from "@/components/CustomTextInput";
+import { useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import Constants from "expo-constants";
-import { useLocalSearchParams } from "expo-router";
+import CustomTextInput from "@/components/CustomTextInput";
+import * as ImagePicker from "expo-image-picker";
 
 const API_URL =
-  Constants.expoConfig?.extra?.API_URL || "http://10.12.29.118:5001/api";
+  Constants.expoConfig?.extra?.API_URL || "http://10.12.26.186:5001/api";
 
 export default function AccountSetupScreen() {
   const [name, setName] = useState<string>("");
+  const [profileImage, setProfileImage] = useState("");
   const { phone } = useLocalSearchParams();
 
   const fetchUser = async () => {
@@ -17,9 +19,23 @@ export default function AccountSetupScreen() {
       const response = await axios.get(`${API_URL}/users/${phone}`);
       if (response.data) {
         setName(response.data.name || "");
+        setProfileImage(response.data.profileImage);
       }
     } catch (error) {
       console.log("No User Found");
+    }
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri);
     }
   };
 
@@ -28,28 +44,34 @@ export default function AccountSetupScreen() {
   }, []);
 
   return (
-    <View className="flex-1 bg-white items-center p-6">
-      <Text className="text-3xl font-bold mb-4">Set up your Profile</Text>
+    <View className="items-center flex-1 p-6 bg-white">
+      <Text className="mb-4 text-3xl font-bold">Set up your Profile</Text>
 
       {/* Profile Image */}
-      <TouchableOpacity className="mb-6">
-        <Image
-          className="w-32 h-32 rounded-full border-2 border-gray-300"
-          source={require("../assets/images/icon.png")}
-        />
+      <TouchableOpacity className="mb-6" onPress={pickImage}>
+        {profileImage ? (
+          <Image
+            className="w-32 h-32 border-2 border-gray-300 rounded-full"
+            source={{ uri: profileImage }}
+          />
+        ) : (
+          <View className="items-center justify-center w-32 h-32 bg-gray-200 border-2 border-gray-400 rounded-full">
+            <Text>Add Photo</Text>
+          </View>
+        )}
       </TouchableOpacity>
 
       {/* Name Input */}
       <CustomTextInput
-        className="border border-gray-300 rounded-lg p-4 w-full text-lg mb-4"
+        className="w-full p-4 mb-4 text-lg border border-gray-300 rounded-lg"
         placeholder="Enter Your Name"
         value={name}
         onChangeText={setName}
       />
 
       {/* Save Button */}
-      <TouchableOpacity className="p-4 w-full rounded-full bg-green-500">
-        <Text className="text-white text-center font-bold text-lg">
+      <TouchableOpacity className="w-full p-4 bg-green-500 rounded-full">
+        <Text className="text-lg font-bold text-center text-white">
           Save & Continue
         </Text>
       </TouchableOpacity>
