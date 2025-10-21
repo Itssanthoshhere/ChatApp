@@ -11,9 +11,9 @@ export default function ChatlistScreen() {
     router.push("/");
   };
 
-  const getUser = async () => {
-    return await AsyncStorage.getItem("user");
-  };
+//   const getUser = async () => {
+//     return await AsyncStorage.getItem("user");
+//   };
 
   return (
     <View className="items-center justify-center flex-1">
