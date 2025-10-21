@@ -24,7 +24,7 @@ export default function ChatlistScreen() {
 
   useEffect(() => {
     getUserData();
-  });
+  }, []);
 
   return (
     <View className="items-center justify-center flex-1 bg-white">
