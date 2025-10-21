@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import Constants from "expo-constants";
@@ -11,6 +11,7 @@ const API_URL =
 
 export default function AccountSetupScreen() {
   const [name, setName] = useState<string>("");
+  const [id, setId] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const { phone } = useLocalSearchParams();
 
@@ -19,6 +20,7 @@ export default function AccountSetupScreen() {
       const response = await axios.get(`${API_URL}/users/${phone}`);
       if (response.data) {
         setName(response.data.name || "");
+        setId(response.data._id);
         setProfileImage(response.data.profileImage);
       }
     } catch (error) {
@@ -43,6 +45,40 @@ export default function AccountSetupScreen() {
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri);
     }
+  };
+
+  // Save or Update Profile
+  const saveProfile = async () => {
+    if (!name.trim()) {
+      Alert.alert("Name Required", "Please enter your name before proceeding");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("phone", phone);
+      formData.append("name", name);
+
+      if (profileImage && profileImage.startsWith("file://")) {
+        formData.append("profileImage", {
+          uri: profileImage,
+          type: "image/jpeg",
+          name: "profile.jpg",
+        });
+      }
+
+      let response;
+
+      if (id) {
+        response = await axios.put(`${API_URL}/users/${id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        response = await axios.post(`${API_URL}/users`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
