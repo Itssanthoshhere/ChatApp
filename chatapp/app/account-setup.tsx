@@ -60,11 +60,15 @@ export default function AccountSetupScreen() {
       formData.append("name", name);
 
       if (profileImage && profileImage.startsWith("file://")) {
+        const fileName = profileImage.split('/').pop() || 'profile.jpg';
+        const fileType = fileName.split('.').pop()?.toLowerCase();
+        const mimeType = fileType === 'png' ? 'image/png' : 'image/jpeg';
+
         formData.append("profileImage", {
           uri: profileImage,
-          type: "image/jpeg",
-          name: "profile.jpg",
-        });
+          type: mimeType,
+          name: fileName,
+        } as any);  // Type assertion needed for React Native FormData
       }
 
       let response;
