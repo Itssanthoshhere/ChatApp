@@ -20,15 +20,25 @@ const upload = multer({ storage });
 router.get("/:phone", async (req, res) => {
   try {
     const user = await User.findOne({ phone: req.params.phone });
+    console.log(user);
+
+    // Profile Image relative image to full url conversion
+    const profileImageUrl =
+      user && user.profileImage
+        ? `${req.protocol}://${req.get("host")}${user.profileImage}`
+        : null;
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    res.json(user);
+    res.json({
+      _id: user._id,
+      phone: user.phone,
+      name: user.name,
+      profileImage: profileImageUrl,
+    });
   } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ error: error.message });
   }
 });
 
