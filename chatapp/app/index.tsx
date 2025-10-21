@@ -1,25 +1,61 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  Image,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import "../global.css";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { getUser } from "@/utils/storage";
 
 export default function WelcomeScreen() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const redirectUser = async () => {
+    try {
+      setLoading(true);
+      const user = await getUser();
+      if (user) {
+        router.replace("/chats");
+      }
+    } catch (error) {
+      console.log("Error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    redirectUser();
+  }, []);
+
+  if (loading)
+    return (
+      <ActivityIndicator
+        size={"large"}
+        color={"green"}
+        className="justify-center flex-1"
+      />
+    );
 
   return (
-    <View className="bg-white flex-1 items-center justify-center px-5">
+    <View className="items-center justify-center flex-1 px-5 bg-white">
       {/* Logo */}
       <Image
-        className="w-28 h-28 mb-10"
+        className="mb-10 w-28 h-28"
         source={require("../assets/images/WhatsApp.png")}
       />
 
       {/* Welcome Text */}
-      <Text className="text-3xl font-bold text-gray-900 text-center mb-4">
+      <Text className="mb-4 text-3xl font-bold text-center text-gray-900">
         Welcome to ChatApp!
       </Text>
 
       {/* Privacy Terms */}
-      <Text className="text-center text-lg mb-8">
+      <Text className="mb-8 text-lg text-center">
         Read Our
         <Text className="text-blue-500"> Privacy Policy</Text>. Tap "Agree &
         Continue" to accept the
@@ -28,12 +64,14 @@ export default function WelcomeScreen() {
 
       {/* Agree & Continue Button */}
       <TouchableOpacity
-        className="bg-green-500 px-6 py-4 rounded-full w-full"
+        className="w-full px-6 py-4 bg-green-500 rounded-full"
         onPress={() => {
           router.push("/login");
         }}
       >
-        <Text className="text-white text-center font-bold text-lg">Agree & Continue</Text>
+        <Text className="text-lg font-bold text-center text-white">
+          Agree & Continue
+        </Text>
       </TouchableOpacity>
     </View>
   );

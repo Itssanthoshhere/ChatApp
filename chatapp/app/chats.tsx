@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 
-export default function ChatlistScreen() {
+export default function ChatsScreen() {
   const router = useRouter();
 
   const logout = async () => {

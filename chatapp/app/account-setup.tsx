@@ -98,7 +98,7 @@ export default function AccountSetupScreen() {
       if (response.data) {
         // Success
         await AsyncStorage.setItem("user", JSON.stringify(response.data));
-        router.push("/chat-list");
+        router.push("/chats");
       } else {
         Alert.alert("Error", "Something went wrong while saving your profile");
       }
@@ -118,7 +118,10 @@ export default function AccountSetupScreen() {
     };
 
     // Listen back button press
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
 
     return () => {
       backHandler.remove();
