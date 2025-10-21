@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
-import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import axios from "axios";
 import Constants from "expo-constants";
 import CustomTextInput from "@/components/CustomTextInput";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL =
   Constants.expoConfig?.extra?.API_URL || "http://10.12.26.186:5001/api";
@@ -14,6 +22,8 @@ export default function AccountSetupScreen() {
   const [id, setId] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const { phone } = useLocalSearchParams();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const fetchUser = async () => {
     try {
@@ -71,6 +81,7 @@ export default function AccountSetupScreen() {
         } as any); // Type assertion needed for React Native FormData
       }
 
+      setLoading(true);
       let response;
 
       if (id) {
@@ -82,12 +93,33 @@ export default function AccountSetupScreen() {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
-    } catch (error) {}
+
+      if (response.data) {
+        // Success
+        await AsyncStorage.setItem("user", JSON.stringify(response.data));
+        router.push("/chat-list");
+      } else {
+        Alert.alert("Error", "Something went wrong while saving your profile");
+      }
+    } catch (error) {
+      console.log("Error saving profile", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+  if (loading)
+    return (
+      <ActivityIndicator
+        size="large"
+        color="green"
+        className="justify-center flex-1"
+      />
+    );
 
   return (
     <View className="items-center flex-1 p-6 bg-white">
@@ -116,7 +148,10 @@ export default function AccountSetupScreen() {
       />
 
       {/* Save Button */}
-      <TouchableOpacity className="w-full p-4 bg-green-500 rounded-full">
+      <TouchableOpacity
+        className="w-full p-4 bg-green-500 rounded-full"
+        onPress={saveProfile}
+      >
         <Text className="text-lg font-bold text-center text-white">
           Save & Continue
         </Text>
