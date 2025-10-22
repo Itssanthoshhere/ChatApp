@@ -3,6 +3,10 @@ import Constants from "expo-constants";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 
+if (!API_URL) {
+  throw new Error("API_URL is not configured in expo config");
+}
+
 // Define a User type if needed
 export interface User {
   _id?: string;
