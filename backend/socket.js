@@ -1,3 +1,5 @@
+import Conversation from "./models/Conversation.js";
+
 export default function registerSocketHandlers(io) {
   console.log("Socket Handlers initialized");
 
@@ -17,6 +19,37 @@ export default function registerSocketHandlers(io) {
     socket.on("join", (otherUserId) => {
       socket.join(otherUserId);
       console.log(`User ${userId} joined a chat with ${otherUserId}`);
+    });
+
+    socket.on("send-message", async (data) => {
+      const { otherUserId, text } = data;
+
+      try {
+        // Find or create conversation
+        let conversation = await Conversation.findOne({
+          participants: { $all: [userId, otherUserId] },
+        }).populate("participants");
+
+        let isNew = false;
+
+        if (!conversation) {
+          isNew = true;
+          conversation = new Conversation({
+            participants: [userId, otherUserId],
+          });
+
+          await conversation.populate("participants");
+        }
+
+        await conversation.save();
+        socket.to(otherUserId).emit("receive-message", {
+          text,
+          conversation,
+          isNew,
+        });
+      } catch (error) {
+        console.log("Send Message", error);
+      }
     });
 
     // Handle disconnection
