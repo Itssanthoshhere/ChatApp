@@ -50,9 +50,20 @@ export default function registerSocketHandlers(io) {
 
         await message.save();
 
+        // Update Unread Count
+        const currentUnread =
+          conversation.unreadCounts.get(otherUserId.toString()) || 0;
+        conversation.unreadCounts.set(
+          otherUserId.toString(),
+          currentUnread + 1
+        );
+
+        // Update Last Activity
+        conversation.lastMessage = message;
+
         await conversation.save();
         socket.to(otherUserId).emit("receive-message", {
-          text,
+          message,
           conversation,
           isNew,
         });
@@ -60,10 +71,23 @@ export default function registerSocketHandlers(io) {
         console.log("Send Message", error);
       }
     });
-
+    
     // Handle disconnection
     socket.on("disconnect", () => {
       console.log(`Socket disconnected: ${socket.id}`);
+    });
+
+    socket.on("focus-conversation", async (conversationId) => {
+      try {
+        const conversation = await Conversation.findById(conversationId);
+        if (!conversation) {
+          return;
+        }
+        conversation.unreadCounts.set(userId, 0);
+        await conversation.save();
+      } catch (error) {
+        console.log("Focus conversation error", error);
+      }
     });
   });
 }
