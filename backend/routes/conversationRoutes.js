@@ -13,7 +13,7 @@ router.get("/:userId", async (req, res) => {
     })
       .populate("participants")
       .populate("lastMessage")
-      .sort({ updateAt: -1 });
+      .sort({ updatedAt: -1 });
 
     res.json(conversations);
   } catch (error) {
