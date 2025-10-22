@@ -50,9 +50,20 @@ export default function registerSocketHandlers(io) {
 
         await message.save();
 
+        // Update Unread Count
+        const currentUnread =
+          conversation.unreadCounts.get(otherUserId.toString()) || 0;
+        conversation.unreadCounts.set(
+          otherUserId.toString(),
+          currentUnread + 1
+        );
+
+        // Update Last Activity
+        conversation.lastMessage = message;
+
         await conversation.save();
         socket.to(otherUserId).emit("receive-message", {
-          text,
+          message,
           conversation,
           isNew,
         });
@@ -60,7 +71,7 @@ export default function registerSocketHandlers(io) {
         console.log("Send Message", error);
       }
     });
-
+    
     // Handle disconnection
     socket.on("disconnect", () => {
       console.log(`Socket disconnected: ${socket.id}`);
