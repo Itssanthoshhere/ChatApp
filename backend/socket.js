@@ -19,7 +19,7 @@ export default function registerSocketHandlers(io) {
     // Join another user's room for chat
     socket.on("join", (otherUserId) => {
       socket.join(otherUserId);
-      console.log(`User ${userId} joined a chat with ${otherUserId} `);
+      console.log(`User ${userId} joined a chat with ${otherUserId}`);
     });
 
     socket.on("send-message", async (data) => {
