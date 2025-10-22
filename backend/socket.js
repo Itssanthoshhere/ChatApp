@@ -1,4 +1,5 @@
 import Conversation from "./models/Conversation.js";
+import Message from "./models/Message.js";
 
 export default function registerSocketHandlers(io) {
   console.log("Socket Handlers initialized");
@@ -40,6 +41,14 @@ export default function registerSocketHandlers(io) {
 
           await conversation.populate("participants");
         }
+        // save Message
+        const message = new Message({
+          conversationId: conversation._id,
+          senderId: userId,
+          text,
+        });
+
+        await message.save();
 
         await conversation.save();
         socket.to(otherUserId).emit("receive-message", {
