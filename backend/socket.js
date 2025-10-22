@@ -76,5 +76,18 @@ export default function registerSocketHandlers(io) {
     socket.on("disconnect", () => {
       console.log(`Socket disconnected: ${socket.id}`);
     });
+
+    socket.on("focus-conversation", async (conversationId) => {
+      try {
+        const conversation = await Conversation.findById(conversationId);
+        if (!conversation) {
+          return;
+        }
+        conversation.unreadCounts.set(userId, 0);
+        await conversation.save();
+      } catch (error) {
+        console.log("Focus conversation error", error);
+      }
+    });
   });
 }
