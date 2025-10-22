@@ -13,29 +13,32 @@ import axios from "axios";
 import Constants from "expo-constants";
 import CustomTextInput from "@/components/CustomTextInput";
 import * as ImagePicker from "expo-image-picker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchUser, saveUser as saveUserAPI, updateUser } from "@/utils/api";
+import { saveUser as saveUserStorage } from "@/utils/storage";
 
 const API_URL =
   Constants.expoConfig?.extra?.API_URL || "http://10.12.26.186:5001/api";
 
 export default function AccountSetupScreen() {
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState("");
   const [id, setId] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const { phone } = useLocalSearchParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const fetchUser = async () => {
+  const loadUser = async () => {
     try {
-      const response = await axios.get(`${API_URL}/users/${phone}`);
-      if (response.data) {
-        setName(response.data.name || "");
-        setId(response.data._id);
-        setProfileImage(response.data.profileImage);
+      const data = await fetchUser(phone);
+
+      if (data) {
+        setName(data.name || "");
+        setId(data._id);
+        setProfileImage(data.profileImage);
       }
     } catch (error) {
-      console.log("No User Found");
+      console.log("No User Found", error);
     }
   };
 
@@ -86,18 +89,14 @@ export default function AccountSetupScreen() {
       let response;
 
       if (id) {
-        response = await axios.put(`${API_URL}/users/${id}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        response = await updateUser(id, formData);
       } else {
-        response = await axios.post(`${API_URL}/users`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        response = await saveUserAPI(formData);
       }
 
-      if (response.data) {
+      if (response) {
         // Success
-        await AsyncStorage.setItem("user", JSON.stringify(response.data));
+        await saveUserStorage(response);
         router.push("/chats");
       } else {
         Alert.alert("Error", "Something went wrong while saving your profile");
@@ -110,7 +109,7 @@ export default function AccountSetupScreen() {
   };
 
   useEffect(() => {
-    fetchUser();
+    loadUser();
 
     const handleBackPress = () => {
       router.replace("/");
