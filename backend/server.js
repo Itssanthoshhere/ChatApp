@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 
 import userRoutes from "./routes/userRoutes.js";
 import registerSocketHandlers from "./socket.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => res.send("Hello"));
 
 // API routes
 app.use("/api/users", userRoutes);
+app.use("/api/conversations", conversationRoutes);
 
 // Start server
 const server = app.listen(port, () =>
