@@ -3,7 +3,15 @@ import Constants from "expo-constants";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 
-export const fetchUser = async (phone) => {
+// Define a User type if needed
+export interface User {
+  _id?: string;
+  name?: string;
+  phone?: string;
+  profileImage?: string;
+}
+
+export const fetchUser = async (phone: string): Promise<User | undefined> => {
   try {
     const response = await axios.get(`${API_URL}/users/${phone}`);
     return response.data;
@@ -12,7 +20,10 @@ export const fetchUser = async (phone) => {
   }
 };
 
-export const updateUser = async (id, formData) => {
+export const updateUser = async (
+  id: string,
+  formData: FormData
+): Promise<User | undefined> => {
   try {
     const response = await axios.put(`${API_URL}/users/${id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -23,7 +34,9 @@ export const updateUser = async (id, formData) => {
   }
 };
 
-export const saveUser = async (formData) => {
+export const saveUser = async (
+  formData: FormData
+): Promise<User | undefined> => {
   try {
     const response = await axios.post(`${API_URL}/users`, formData, {
       headers: { "Content-Type": "multipart/form-data" },

@@ -9,8 +9,8 @@ import {
   View,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import axios from "axios";
 import Constants from "expo-constants";
+
 import CustomTextInput from "@/components/CustomTextInput";
 import * as ImagePicker from "expo-image-picker";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,21 +21,25 @@ const API_URL =
   Constants.expoConfig?.extra?.API_URL || "http://10.12.26.186:5001/api";
 
 export default function AccountSetupScreen() {
-  const [name, setName] = useState("");
-  const [id, setId] = useState("");
-  const [profileImage, setProfileImage] = useState("");
+  const [name, setName] = useState<string>("");
+  const [id, setId] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const { phone } = useLocalSearchParams();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+
+  // Safely get phone as string
+  const phoneStr = Array.isArray(phone) ? phone[0] : phone;
 
   const loadUser = async () => {
+    if (!phoneStr) return; // guard against undefined phone
     try {
-      const data = await fetchUser(phone);
-
+      const data = await fetchUser(phoneStr);
       if (data) {
         setName(data.name || "");
-        setId(data._id);
-        setProfileImage(data.profileImage);
+        setId(data._id || "");
+        setProfileImage(data.profileImage || "");
       }
     } catch (error) {
       console.log("No User Found", error);
@@ -49,14 +53,14 @@ export default function AccountSetupScreen() {
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.assets.length > 0) {
       setProfileImage(result.assets[0].uri);
     }
   };
@@ -70,7 +74,7 @@ export default function AccountSetupScreen() {
 
     try {
       const formData = new FormData();
-      formData.append("phone", phone);
+      formData.append("phone", phoneStr!); // guaranteed by guard
       formData.append("name", name);
 
       if (profileImage && profileImage.startsWith("file://")) {
@@ -82,7 +86,7 @@ export default function AccountSetupScreen() {
           uri: profileImage,
           type: mimeType,
           name: fileName,
-        } as any); // Type assertion needed for React Native FormData
+        } as unknown as Blob); // cast for TS
       }
 
       setLoading(true);
@@ -102,7 +106,11 @@ export default function AccountSetupScreen() {
         Alert.alert("Error", "Something went wrong while saving your profile");
       }
     } catch (error) {
-      console.log("Error saving profile", error.message);
+      if (error instanceof Error) {
+        console.log("Error saving profile", error.message);
+      } else {
+        console.log("Unknown error", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -122,9 +130,7 @@ export default function AccountSetupScreen() {
       handleBackPress
     );
 
-    return () => {
-      backHandler.remove();
-    };
+    return () => backHandler.remove();
   }, []);
 
   if (loading)
