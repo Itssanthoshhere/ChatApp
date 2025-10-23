@@ -1,6 +1,6 @@
 import CustomTextInput from "@/components/CustomTextInput";
 import { getUser } from "@/utils/storage";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -31,8 +31,6 @@ export default function ChatsScreen() {
   return (
     <>
       <Header />
-      <SearchBar />
-      <CategoryTabs />
       <ChatList />
     </>
   );
@@ -94,7 +92,7 @@ function ChatList() {
     {
       _id: 1,
       name: "John Doe",
-      message: "Hi, How r u?",
+      message: "Hi, how are you?",
       avatar:
         "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
       createdAt: "10:45 AM",
@@ -103,7 +101,7 @@ function ChatList() {
     {
       _id: 2,
       name: "Jane Smith",
-      message: "Let's go for movie!",
+      message: "Let's go for a movie!",
       avatar:
         "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
       createdAt: "9:20 AM",
@@ -111,17 +109,116 @@ function ChatList() {
     },
     {
       _id: 3,
-      name: "John Doe",
-      message: "Have You Finished the Assignment?",
+      name: "Alex Johnson",
+      message: "Have you finished the assignment?",
       avatar:
         "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
       createdAt: "2:45 PM",
+      unread: 0,
+    },
+    {
+      _id: 4,
+      name: "Sophia Lee",
+      message: "Let's catch up later!",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "11:10 AM",
       unread: 1,
+    },
+    {
+      _id: 5,
+      name: "David Brown",
+      message: "Meeting at 5 PM confirmed.",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "4:05 PM",
+      unread: 0,
+    },
+    {
+      _id: 6,
+      name: "Emily Davis",
+      message: "Can you send me the notes?",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "1:30 PM",
+      unread: 4,
+    },
+    {
+      _id: 7,
+      name: "Michael Scott",
+      message: "Don't forget the meeting tomorrow!",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "3:15 PM",
+      unread: 1,
+    },
+    {
+      _id: 8,
+      name: "Pam Beesly",
+      message: "Great work on the project!",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "12:00 PM",
+      unread: 0,
+    },
+    {
+      _id: 9,
+      name: "Jim Halpert",
+      message: "See you at lunch.",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "11:50 AM",
+      unread: 2,
+    },
+    {
+      _id: 10,
+      name: "Dwight Schrute",
+      message: "Bears, beets, Battlestar Galactica.",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "8:45 AM",
+      unread: 0,
+    },
+    {
+      _id: 11,
+      name: "Stanley Hudson",
+      message: "Pretzel day is the best day!",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "10:10 AM",
+      unread: 3,
+    },
+    {
+      _id: 12,
+      name: "Angela Martin",
+      message: "The cat party is tonight.",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "9:55 AM",
+      unread: 0,
     },
   ];
 
   return (
     <FlatList
+      ListHeaderComponent={() => (
+        <>
+          <SearchBar />
+          <CategoryTabs />
+        </>
+      )}
+      ListFooterComponent={() => (
+        <View className="items-center justify-center py-6">
+          <MaterialCommunityIcons
+            name="lock-outline"
+            size={16}
+            color={"gray"}
+          />
+          <Text className="text-xs text-gray-500 mt-">
+            Your Personal messages are not end to end encrypted
+          </Text>
+        </View>
+      )}
       data={dummyChats}
       keyExtractor={(item) => item._id.toString()}
       renderItem={({ item }) => (
@@ -141,16 +238,17 @@ function ChatList() {
             <View className="flex-row justify-between">
               <Text
                 numberOfLines={1}
-                className="flex-1 mr-5 text-sm text-gray-500"
+                className="flex-1 mr-5 text-gray-500 text-md"
               >
                 {item.message}
               </Text>
-
-              <View className="bg-green-600 min-w-[20px] rounded-full items-center justify-center px-2 ml-2">
-                <Text className="text-xs font-bold text-white">
-                  {item.unread}
-                </Text>
-              </View>
+              {item.unread > 0 && (
+                <View className="bg-green-600 min-w-[20px] rounded-full items-center justify-center px-2 ml-2">
+                  <Text className="text-xs font-bold text-white">
+                    {item.unread}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </TouchableOpacity>
