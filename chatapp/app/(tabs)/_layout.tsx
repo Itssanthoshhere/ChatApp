@@ -44,7 +44,7 @@ export default function TabLayout() {
           const iconColor = focused ? "#075E54" : "black";
 
           return (
-            <View className=" w-[100px] h-[58px] items-center justify-center">
+            <View className="w-[100px] h-[60px] items-center justify-center">
               <View
                 className={`${focused ? "bg-green-200" : "bg-transparent"}  px-5 py-1.5 rounded-full relative`}
               >
