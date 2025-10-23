@@ -1,14 +1,16 @@
 import CustomTextInput from "@/components/CustomTextInput";
 import { getUser } from "@/utils/storage";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { TouchableOpacity, View, Text, FlatList, Image } from "react-native";
 
 export default function ChatsScreen() {
-  const router = useRouter();
-
   // const logout = async () => {
   //   await AsyncStorage.removeItem("user");
   //   // Redirect to welcome screen
@@ -58,7 +60,7 @@ function SearchBar() {
     <View className="flex-row items-center px-4 py-3 mx-4 mb-3 bg-gray-200 rounded-full">
       <Ionicons name="search" size={20} color="gray" />
       <CustomTextInput
-        className="flex-1 ml-2 text-sm"
+        className="flex-1 ml-2 text-md"
         placeholder="Ask Meta AI or Search"
         placeholderTextColor="gray"
       />
@@ -200,59 +202,85 @@ function ChatList() {
   ];
 
   return (
-    <FlatList
-      ListHeaderComponent={() => (
-        <>
-          <SearchBar />
-          <CategoryTabs />
-        </>
-      )}
-      ListFooterComponent={() => (
-        <View className="items-center justify-center py-6">
-          <MaterialCommunityIcons
-            name="lock-outline"
-            size={16}
-            color={"gray"}
-          />
-          <Text className="text-xs text-gray-500 mt-">
-            Your Personal messages are not end to end encrypted
-          </Text>
-        </View>
-      )}
-      data={dummyChats}
-      keyExtractor={(item) => item._id.toString()}
-      renderItem={({ item }) => (
-        <TouchableOpacity className="flex-row items-center px-4 py-2">
-          <Image
-            className="w-12 h-12 rounded-full"
-            source={{ uri: item.avatar }}
-          />
-          <View className="flex-1 ml-4">
-            <View className="flex-row justify-between">
-              <Text className="text-base font-semibold text-black">
-                {item.name}
+    <View className="bg-white">
+      {dummyChats.length > 0 ? (
+        <FlatList
+          ListHeaderComponent={() => (
+            <>
+              <SearchBar />
+              <CategoryTabs />
+            </>
+          )}
+          ListFooterComponent={() => (
+            <View className="items-center justify-center py-6">
+              <MaterialCommunityIcons
+                name="lock-outline"
+                size={16}
+                color={"gray"}
+              />
+              <Text className="text-xs text-gray-500 mt-">
+                Your Personal messages are not end to end encrypted
               </Text>
-              <Text className="text-xs text-gray-500">{item.createdAt}</Text>
             </View>
-
-            <View className="flex-row justify-between">
-              <Text
-                numberOfLines={1}
-                className="flex-1 mr-5 text-gray-500 text-md"
-              >
-                {item.message}
-              </Text>
-              {item.unread > 0 && (
-                <View className="bg-green-600 min-w-[20px] rounded-full items-center justify-center px-2 ml-2">
-                  <Text className="text-xs font-bold text-white">
-                    {item.unread}
+          )}
+          data={dummyChats}
+          keyExtractor={(item) => item._id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity className="flex-row items-center px-4 py-2">
+              <Image
+                className="w-12 h-12 rounded-full"
+                source={{ uri: item.avatar }}
+              />
+              <View className="flex-1 ml-4">
+                <View className="flex-row justify-between">
+                  <Text className="text-lg font-semibold text-black">
+                    {item.name}
+                  </Text>
+                  <Text className="text-xs text-gray-500">
+                    {item.createdAt}
                   </Text>
                 </View>
-              )}
-            </View>
-          </View>
-        </TouchableOpacity>
+
+                <View className="flex-row justify-between">
+                  <Text
+                    numberOfLines={1}
+                    className="flex-1 mr-5 text-gray-500 text-md"
+                  >
+                    {item.message}
+                  </Text>
+                  {item.unread > 0 && (
+                    <View className="bg-green-600 min-w-[20px] rounded-full items-center justify-center px-2 ml-2">
+                      <Text className="text-xs font-bold text-white">
+                        {item.unread}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      ) : (
+        <EmptyChats />
       )}
-    />
+      ;
+    </View>
+  );
+}
+
+function EmptyChats() {
+  return (
+    <View className="items-center justify-center flex-1 p-6 bg-white ">
+      <MaterialIcons name="chat-bubble-outline" size={100} />
+      <Text className="mt-6 text-xl font-semibold">
+        Start Chatting on ChatApp
+      </Text>
+      <Text className="mt-2 text-center text-gray-500">
+        Tap the message icon below to start a new conversation
+      </Text>
+      <TouchableOpacity className="absolute p-4 bg-green-500 rounded-full bottom-6 right-6">
+        <MaterialIcons name="message" size={28} color={"white"} />
+      </TouchableOpacity>
+    </View>
   );
 }
