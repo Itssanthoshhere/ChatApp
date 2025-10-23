@@ -38,7 +38,7 @@ function Header() {
   return (
     <View className="flex-row items-center justify-between pt-10 bg-white ">
       <Text className="px-4 text-2xl font-bold text-green-700">ChatApp</Text>
-      <View className="flex-row gap-5 mb-4">
+      <View className="flex-row gap-5 mb-4 pr-4">
         <TouchableOpacity>
           <Ionicons size={24} name="qr-code-outline" />
         </TouchableOpacity>
