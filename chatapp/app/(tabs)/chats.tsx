@@ -218,7 +218,7 @@ function ChatList() {
                 size={16}
                 color={"gray"}
               />
-              <Text className="text-xs text-gray-500 mt-">
+              <Text className="mt-1 text-xs text-gray-500">
                 Your Personal messages are not end to end encrypted
               </Text>
             </View>
