@@ -3,7 +3,7 @@ import { getUser } from "@/utils/storage";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 
 export default function ChatsScreen() {
@@ -32,6 +32,7 @@ export default function ChatsScreen() {
     <>
       <Header />
       <SearchBar />
+      <CategoryTabs />
     </>
   );
 }
@@ -62,6 +63,27 @@ function SearchBar() {
         placeholder="Ask Meta AI or Search"
         placeholderTextColor="gray"
       />
+    </View>
+  );
+}
+
+function CategoryTabs() {
+  const categories = ["All", "Unread", "Favorites", "Groups"];
+
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  /* Category Tabs */
+  return (
+    <View className="flex-row gap-5 px-4 mb-3">
+      {categories.map((c, i) => (
+        <TouchableOpacity
+          key={i}
+          onPress={() => setActiveCategory(c)}
+          className={`text-sm ${activeCategory == c ? "bg-green-200" : "bg-gray-200"} bg-gray-200 px-3 py-1 rounded-full`}
+        >
+          <Text>{c}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
