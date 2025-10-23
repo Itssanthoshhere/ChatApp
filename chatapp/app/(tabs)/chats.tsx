@@ -68,7 +68,7 @@ function SearchBar() {
 }
 
 function CategoryTabs() {
-  const categories = ["All", "Unread", "Favorities", "Groups"];
+  const categories = ["All", "Unread", "Favorites", "Groups"];
 
   const [activeCategory, setActiveCategory] = useState("All");
 
