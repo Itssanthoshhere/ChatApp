@@ -263,7 +263,6 @@ function ChatList() {
       ) : (
         <EmptyChats />
       )}
-      ;
     </View>
   );
 }
