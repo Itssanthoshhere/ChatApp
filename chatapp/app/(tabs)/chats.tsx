@@ -1,4 +1,5 @@
 import { getUser } from "@/utils/storage";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -27,10 +28,24 @@ export default function ChatsScreen() {
   }, []);
 
   return (
-    <View className="items-center justify-center flex-1 bg-white">
-      <TouchableOpacity className="bg-red-500 rounded-full" onPress={logout}>
-        <Text className="p-3 text-white">Logout</Text>
-      </TouchableOpacity>
+    <>
+      <Header />
+    </>
+  );
+}
+
+function Header() {
+  return (
+    <View className="flex-row items-center justify-between pt-10 bg-white ">
+      <Text className="px-4 text-2xl font-bold text-green-700">ChatApp</Text>
+      <View className="flex-row gap-5 mb-4">
+        <TouchableOpacity>
+          <Ionicons size={24} name="qr-code-outline" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Feather size={24} name="more-vertical" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
