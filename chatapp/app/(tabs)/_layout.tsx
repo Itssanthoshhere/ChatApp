@@ -6,6 +6,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarStyle: {
           height: 60,
         },
