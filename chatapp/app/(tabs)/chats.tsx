@@ -205,6 +205,9 @@ function ChatList() {
     <View className="bg-white">
       {dummyChats.length > 0 ? (
         <FlatList
+          contentContainerStyle={{
+            paddingBottom: 100,
+          }}
           ListHeaderComponent={() => (
             <>
               <SearchBar />
@@ -218,7 +221,7 @@ function ChatList() {
                 size={16}
                 color={"gray"}
               />
-              <Text className="mt-1 text-xs text-gray-500">
+              <Text className="mt-2 text-xs text-gray-500">
                 Your Personal messages are not end to end encrypted
               </Text>
             </View>
