@@ -1,10 +1,10 @@
 import CustomTextInput from "@/components/CustomTextInput";
 import { getUser } from "@/utils/storage";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, FlatList, Image } from "react-native";
 
 export default function ChatsScreen() {
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function ChatsScreen() {
       <Header />
       <SearchBar />
       <CategoryTabs />
+      <ChatList />
     </>
   );
 }
@@ -85,5 +86,75 @@ function CategoryTabs() {
         </TouchableOpacity>
       ))}
     </View>
+  );
+}
+
+function ChatList() {
+  const dummyChats = [
+    {
+      _id: 1,
+      name: "John Doe",
+      message: "Hi, How r u?",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "10:45 AM",
+      unread: 2,
+    },
+    {
+      _id: 2,
+      name: "Jane Smith",
+      message: "Let's go for movie!",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "9:20 AM",
+      unread: 3,
+    },
+    {
+      _id: 3,
+      name: "John Doe",
+      message: "Have You Finished the Assignment?",
+      avatar:
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      createdAt: "2:45 PM",
+      unread: 1,
+    },
+  ];
+
+  return (
+    <FlatList
+      data={dummyChats}
+      keyExtractor={(item) => item._id.toString()}
+      renderItem={({ item }) => (
+        <TouchableOpacity className="flex-row items-center px-4 py-2">
+          <Image
+            className="w-12 h-12 rounded-full"
+            source={{ uri: item.avatar }}
+          />
+          <View className="flex-1 ml-4">
+            <View className="flex-row justify-between">
+              <Text className="text-base font-semibold text-black">
+                {item.name}
+              </Text>
+              <Text className="text-xs text-gray-500">{item.createdAt}</Text>
+            </View>
+
+            <View className="flex-row justify-between">
+              <Text
+                numberOfLines={1}
+                className="flex-1 mr-5 text-sm text-gray-500"
+              >
+                {item.message}
+              </Text>
+
+              <View className="bg-green-600 min-w-[20px] rounded-full items-center justify-center px-2 ml-2">
+                <Text className="text-xs font-bold text-white">
+                  {item.unread}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+    />
   );
 }
