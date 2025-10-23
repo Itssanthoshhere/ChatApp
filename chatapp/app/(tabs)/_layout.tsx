@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
 export default function TabLayout() {
@@ -24,7 +24,7 @@ export default function TabLayout() {
               title = "Chats";
               break;
             case "updates":
-              IconComponent = MaterialCommunityIcons;
+              IconComponent = MaterialIcons;
               iconName = "update";
               title = "Updates";
               break;
