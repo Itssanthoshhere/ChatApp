@@ -1,5 +1,5 @@
 import CustomTextInput from "@/components/CustomTextInput";
-import { getUser } from "@/utils/storage";
+import { getUser, removeUser } from "@/utils/storage";
 import {
   Feather,
   Ionicons,
@@ -9,13 +9,15 @@ import {
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { TouchableOpacity, View, Text, FlatList, Image } from "react-native";
+import { useRouter } from "expo-router";
 
 export default function ChatsScreen() {
-  // const logout = async () => {
-  //   await AsyncStorage.removeItem("user");
-  //   // Redirect to welcome screen
-  //   router.push("/");
-  // };
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await removeUser();
+    router.replace("/"); // Redirect to the welcome screen
+  };
 
   //   const getUser = async () => {
   //     return await AsyncStorage.getItem("user");
@@ -32,13 +34,13 @@ export default function ChatsScreen() {
 
   return (
     <>
-      <Header />
+      <Header onLogout={handleLogout} />
       <ChatList />
     </>
   );
 }
 
-function Header() {
+function Header({ onLogout }: { onLogout: () => void }) {
   return (
     <View className="flex-row items-center justify-between pt-10 bg-white ">
       <Text className="px-4 text-2xl font-bold text-green-700">ChatApp</Text>
@@ -46,8 +48,8 @@ function Header() {
         <TouchableOpacity>
           <Ionicons size={24} name="qr-code-outline" />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Feather size={24} name="more-vertical" />
+        <TouchableOpacity onPress={onLogout}>
+          <Feather size={24} name="log-out" />
         </TouchableOpacity>
       </View>
     </View>
