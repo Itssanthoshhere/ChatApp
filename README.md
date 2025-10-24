@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <a href="https://github.com/Itssanthoshhere/ChatApp" target="_blank">
-    <img src="public/readme/banner.webp" alt="Project Banner" />
+    <img src="chatapp/assets/thumbnail.png" alt="Project Banner" />
   </a>
   <br /><br />
   <!-- Frontend Tech Stack -->
@@ -21,7 +21,7 @@
     <img src="https://img.shields.io/badge/-Axios-000000?style=for-the-badge&logo=axios&logoColor=white"/>
     <img src="https://img.shields.io/badge/-Multer-000000?style=for-the-badge&logoColor=white"/>
   </div>
-  <br />
+  <!-- <br /> -->
   <h3>💬 ChatApp – Real-Time Messaging with Expo & Node.js</h3>
   <b>Full-stack real-time chat application</b> built with <b>React Native (Expo)</b> and <b>Node.js + Express + MongoDB</b>.<br/>
   Features seamless authentication, user setup, and real-time conversations powered by <b>Socket.IO</b>.
