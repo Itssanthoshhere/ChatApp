@@ -28,9 +28,10 @@
   <br/>
   <i>Designed for seamless and scalable real-time communication.</i>
   <br /><br />
-  <a href="#" target="_blank">
-    <img src="https://img.shields.io/badge/🚀%20Live%20Preview-brightgreen?style=for-the-badge&logo=expo&logoColor=white" alt="Live Demo" />
-  </a>
+  <a href="assets/preview.mp4" target="_blank">
+  <img src="https://img.shields.io/badge/🚀%20Live%20Preview-brightgreen?style=for-the-badge&logo=expo&logoColor=white" alt="Live Demo" />
+</a>
+
 </div>
 
 ---
