@@ -1,9 +1,8 @@
 <div align="center">
-  <br />
+  <!-- <br /> -->
   <!-- <a href="https://github.com/Itssanthoshhere/ChatApp" target="_blank">
     <img src="chatapp/assets/thumbnail.png" alt="Project Banner" />
   </a> -->
-  <br /><br />
   <!-- Frontend Tech Stack -->
   <div>
     <img src="https://img.shields.io/badge/-React%20Native-61DBFB?style=for-the-badge&logo=react&logoColor=white"/>
@@ -28,10 +27,10 @@
   <br/>
   <i>Designed for seamless and scalable real-time communication.</i>
   <br /><br />
-<video controls width="640">
+<!-- <video controls width="640">
   <source src="https://raw.githubusercontent.com/Itssanthoshhere/ChatApp/612283616de20551010b08a7a07981409764086d/chatapp/assets/preview.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video>
+</video> -->
 </a>
 </div>
 
